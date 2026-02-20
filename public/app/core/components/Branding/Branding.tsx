@@ -117,8 +117,8 @@ export class Branding {
   static LoginBackground = LoginBackground;
   static MenuLogo = MenuLogo;
   static LoginBoxBackground = LoginBoxBackground;
-  static AppTitle = 'Grafana';
-  static LoginTitle = 'Welcome to Grafana';
+  static AppTitle = 'AIOps Edition';
+  static LoginTitle = 'Welcome to EY AIOps Edition';
   static HideEdition = false;
   static GetLoginSubTitle = (): null | string => {
     return null;

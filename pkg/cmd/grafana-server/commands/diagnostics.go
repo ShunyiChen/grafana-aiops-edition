@@ -130,7 +130,8 @@ func setupProfiling(profile bool, profileAddr string, profilePort uint64, blockR
 			//	G114: Use of net/http serve function that has no support for setting timeouts (gosec)
 			//
 			//nolint:gosec
-			err := http.ListenAndServe(fmt.Sprintf("%s:%d", profileDiagnostics.addr, profileDiagnostics.port), nil)
+			// err := http.ListenAndServe(fmt.Sprintf("%s:%d", profileDiagnostics.addr, profileDiagnostics.port), nil)
+			err := http.ListenAndServe(fmt.Sprintf("%s:%d", "localhost", profileDiagnostics.port), nil)
 			if err != nil {
 				panic(err)
 			}
