@@ -1,4 +1,3 @@
-import React from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 import { useStyles2, Icon, IconButton } from '@grafana/ui';
@@ -15,7 +14,11 @@ export const AIChatWindow = () => {
                     <Icon name="ai-sparkle" size="lg" className={styles.headerIcon} />
                     <span>AI Chat</span>
                 </div>
-                <IconButton name="times" onClick={() => chrome.setAIChatOpen(false)} />
+                <div className={styles.headerActions}>
+                    <IconButton name="plus" onClick={() =>{}} tooltip="New Conversation" aria-label="New Conversation" />
+                    <IconButton name="history" onClick={() =>{}} tooltip="Past Conversation" aria-label="Past Conversation" />
+                    <IconButton name="times" onClick={() => chrome.setAIChatOpen(false)} aria-label="Close" />
+                </div>
             </div>
             <div className={styles.content}>
                 <div className={styles.placeholder}>
@@ -25,7 +28,7 @@ export const AIChatWindow = () => {
             </div>
             <div className={styles.footer}>
                 <input type="text" className={styles.input} placeholder="Type your message..." />
-                <IconButton name="message" variant="primary" />
+                <IconButton name="message" variant="primary" aria-label="Send message" />
             </div>
         </div>
     );
@@ -39,13 +42,19 @@ const getStyles = (theme: GrafanaTheme2) => ({
         width: '100%',
         backgroundColor: theme.colors.background.primary,
         borderLeft: `1px solid ${theme.colors.border.weak}`,
+        boxShadow: theme.shadows.z3,
     }),
     header: css({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: theme.spacing(1, 2),
+        padding: '5px 16px',
         borderBottom: `1px solid ${theme.colors.border.weak}`,
+    }),
+    headerActions: css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
     }),
     headerTitle: css({
         display: 'flex',
