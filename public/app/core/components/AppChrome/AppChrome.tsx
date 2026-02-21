@@ -24,9 +24,10 @@ import { MegaMenu, MENU_WIDTH } from './MegaMenu/MegaMenu';
 import { useMegaMenuFocusHelper } from './MegaMenu/utils';
 import { ReturnToPrevious } from './ReturnToPrevious/ReturnToPrevious';
 import { SingleTopBar } from './TopBar/SingleTopBar';
+import { AIChatWindow } from './TopBar/AIChatWindow';
 import { getChromeHeaderLevelHeight, useChromeHeaderLevels } from './TopBar/useChromeHeaderHeight';
 
-export interface Props extends PropsWithChildren<{}> {}
+export interface Props extends PropsWithChildren<{}> { }
 
 export function AppChrome({ children }: Props) {
   const { chrome } = useGrafana();
@@ -60,6 +61,8 @@ export function AppChrome({ children }: Props) {
   const handleMegaMenu = () => {
     chrome.setMegaMenuOpen(!state.megaMenuOpen);
   };
+
+  const isAIChatOpen = state.aiChatOpen;
 
   const { pathname, search } = locationService.getLocation();
   const url = pathname + search;
@@ -113,7 +116,7 @@ export function AppChrome({ children }: Props) {
         </>
       )}
       <div className={contentClass}>
-        <div className={cx(styles.panes, { [styles.panesWithSidebar]: isExtensionSidebarOpen })}>
+        <div className={cx(styles.panes, { [styles.panesWithSidebar]: isExtensionSidebarOpen || isAIChatOpen })}>
           {!state.chromeless && (
             <div
               className={cx(styles.scopesDashboardsContainer, {
@@ -129,8 +132,8 @@ export function AppChrome({ children }: Props) {
             className={cx(styles.pageContainer, {
               [styles.pageContainerMenuDocked]: menuDockedAndOpen || isScopesDashboardsOpen,
               [styles.pageContainerMenuDockedScopes]: menuDockedAndOpen && isScopesDashboardsOpen,
-              [styles.pageContainerWithSidebar]: !state.chromeless && isExtensionSidebarOpen,
-              [contentSizeStyles.contentWidth]: !state.chromeless && isExtensionSidebarOpen,
+              [styles.pageContainerWithSidebar]: !state.chromeless && (isExtensionSidebarOpen || isAIChatOpen),
+              [contentSizeStyles.contentWidth]: !state.chromeless && (isExtensionSidebarOpen || isAIChatOpen),
             })}
             id="pageContent"
           >
@@ -147,6 +150,18 @@ export function AppChrome({ children }: Props) {
               maxWidth={MAX_EXTENSION_SIDEBAR_WIDTH}
             >
               <ExtensionSidebar />
+            </Resizable>
+          )}
+          {!state.chromeless && isAIChatOpen && (
+            <Resizable
+              className={styles.sidebarContainer}
+              defaultSize={{ width: 400 }}
+              enable={{ left: true }}
+              handleClasses={{ left: dragStyles.dragHandleBaseVertical }}
+              minWidth={300}
+              maxWidth={800}
+            >
+              <AIChatWindow />
             </Resizable>
           )}
         </div>

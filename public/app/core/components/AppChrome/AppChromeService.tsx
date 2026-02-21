@@ -26,6 +26,7 @@ export interface AppChromeState {
     title: ReturnToPreviousProps['title'];
     href: ReturnToPreviousProps['href'];
   };
+  aiChatOpen: boolean;
 }
 
 export const DOCKED_LOCAL_STORAGE_KEY = 'grafana.navigation.docked';
@@ -38,7 +39,7 @@ export class AppChromeService {
 
   private megaMenuDocked = Boolean(
     window.innerWidth >= config.theme2.breakpoints.values.xl &&
-      store.getBool(DOCKED_LOCAL_STORAGE_KEY, Boolean(window.innerWidth >= config.theme2.breakpoints.values.xl))
+    store.getBool(DOCKED_LOCAL_STORAGE_KEY, Boolean(window.innerWidth >= config.theme2.breakpoints.values.xl))
   );
 
   private sessionStorageData = window.sessionStorage.getItem('returnToPrevious');
@@ -52,6 +53,7 @@ export class AppChromeService {
     kioskMode: null,
     layout: PageLayoutType.Canvas,
     returnToPrevious: this.returnToPreviousData,
+    aiChatOpen: false,
   });
 
   public setMatchedRoute(route: RouteDescriptor) {
@@ -157,6 +159,17 @@ export class AppChromeService {
     this.update({
       megaMenuDocked: newDockedState,
     });
+  };
+
+  public setAIChatOpen = (isOpen: boolean) => {
+    this.update({
+      aiChatOpen: isOpen,
+    });
+  };
+
+  public toggleAIChat = () => {
+    const { aiChatOpen } = this.state.getValue();
+    this.setAIChatOpen(!aiChatOpen);
   };
 
   public onToggleKioskMode = () => {
